@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.util.Size
 import android.view.View
 import android.widget.Button
@@ -37,38 +36,28 @@ class MainActivity : AppCompatActivity() {
 
         qrCodeFoundButton = findViewById(R.id.activity_main_qrCodeFoundButton)
         qrCodeFoundButton?.visibility = View.INVISIBLE
-        qrCodeFoundButton?.setOnClickListener(View.OnClickListener {
-            Toast.makeText(applicationContext, qrCode, Toast.LENGTH_SHORT).show()
-            Log.i(MainActivity::class.java.simpleName, "QR Code Found: $qrCode")
-        })
+        qrCodeFoundButton?.isClickable = false
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        requestCamera()
+        requestAndRunCamera()
     }
 
-    private fun requestCamera() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            == PackageManager.PERMISSION_GRANTED) {
+    private fun requestAndRunCamera() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startCamera()
         } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this, Manifest.permission.CAMERA)) {
-
-                ActivityCompat.requestPermissions(this@MainActivity,
-                    arrayOf(Manifest.permission.CAMERA), PERMISSION_REQUEST_CAMERA)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.CAMERA),
+                    PERMISSION_REQUEST_CAMERA)
             } else {
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.CAMERA), PERMISSION_REQUEST_CAMERA
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
+                    PERMISSION_REQUEST_CAMERA
                 )
             }
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
         if (requestCode == PERMISSION_REQUEST_CAMERA) {
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
@@ -120,10 +109,6 @@ class MainActivity : AppCompatActivity() {
             })
         )
 
-        val camera = cameraProvider.bindToLifecycle((this as LifecycleOwner),
-            cameraSelector,
-            imageAnalysis,
-            preview
-        )
+        val camera = cameraProvider.bindToLifecycle((this as LifecycleOwner), cameraSelector, imageAnalysis, preview)
     }
 }
