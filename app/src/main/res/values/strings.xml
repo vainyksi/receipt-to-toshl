@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">bill-to-toshl</string>
+    <string name="qr_code_found">QR Code Found : %1$s</string>
 </resources>

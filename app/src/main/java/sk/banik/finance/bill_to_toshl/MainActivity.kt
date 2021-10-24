@@ -115,6 +115,7 @@ class MainActivity : AppCompatActivity() {
             QRCodeImageAnalyzer(object : QRCodeFoundListener {
                 override fun onQRCodeFound(_qrCode: String?) {
                     qrCode = _qrCode
+                    qrCodeFoundButton!!.text = getString(R.string.qr_code_found, qrCode)
                     qrCodeFoundButton!!.visibility = View.VISIBLE
                 }
 
