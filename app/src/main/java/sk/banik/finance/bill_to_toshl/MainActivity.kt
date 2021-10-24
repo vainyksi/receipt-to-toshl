@@ -70,10 +70,6 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         if (requestCode == PERMISSION_REQUEST_CAMERA) {
-            println("------------------\n")
-            println("size: " + grantResults.size)
-            println("content: " + grantResults.joinToString(","))
-            println("\n------------------")
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
             } else {
@@ -103,7 +99,6 @@ class MainActivity : AppCompatActivity() {
         val cameraSelector : CameraSelector = CameraSelector.Builder()
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
-//        preview.setSurfaceProvider(previewView!!.createSurfaceProvider())
         preview.setSurfaceProvider(previewView!!.surfaceProvider)
 
         val imageAnalysis = ImageAnalysis.Builder()
