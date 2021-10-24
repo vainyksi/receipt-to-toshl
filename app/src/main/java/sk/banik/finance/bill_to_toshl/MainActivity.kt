@@ -20,7 +20,9 @@ import com.google.common.util.concurrent.ListenableFuture
 import java.util.concurrent.ExecutionException
 
 class MainActivity : AppCompatActivity() {
-    private val PERMISSION_REQUEST_CAMERA = 0
+    companion object {
+        const val PERMISSION_REQUEST_CAMERA = 0
+    }
 
     private var previewView: PreviewView? = null
     private var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>? = null
@@ -96,14 +98,14 @@ class MainActivity : AppCompatActivity() {
             .build()
         imageAnalysis.setAnalyzer(
             ContextCompat.getMainExecutor(this),
-            QRCodeImageAnalyzer(object : QRCodeFoundListener {
-                override fun onQRCodeFound(_qrCode: String?) {
+            QRCodeImageDecoder(object : QRCodeDecodingListener {
+                override fun onQRCodeDecodedSuccessfully(_qrCode: String?) {
                     qrCode = _qrCode
                     qrCodeFoundButton!!.text = getString(R.string.qr_code_found, qrCode)
                     qrCodeFoundButton!!.visibility = View.VISIBLE
                 }
 
-                override fun qrCodeNotFound() {
+                override fun onQRCodeDecodeFailed() {
                     qrCodeFoundButton!!.visibility = View.INVISIBLE
                 }
             })

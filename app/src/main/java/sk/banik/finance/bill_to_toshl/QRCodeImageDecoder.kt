@@ -7,7 +7,7 @@ import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.multi.qrcode.QRCodeMultiReader
 
-class QRCodeImageAnalyzer(private val listener: QRCodeFoundListener) : ImageAnalysis.Analyzer {
+class QRCodeImageDecoder(private val listener: QRCodeDecodingListener) : ImageAnalysis.Analyzer {
 
     override fun analyze(image: ImageProxy) {
         if (image.format == ImageFormat.YUV_420_888
@@ -29,13 +29,13 @@ class QRCodeImageAnalyzer(private val listener: QRCodeFoundListener) : ImageAnal
             val binaryBitmap = BinaryBitmap(HybridBinarizer(source))
             try {
                 val result = QRCodeMultiReader().decode(binaryBitmap)
-                listener.onQRCodeFound(result.text)
+                listener.onQRCodeDecodedSuccessfully(result.text)
             } catch (e: FormatException) {
-                listener.qrCodeNotFound()
+                listener.onQRCodeDecodeFailed()
             } catch (e: ChecksumException) {
-                listener.qrCodeNotFound()
+                listener.onQRCodeDecodeFailed()
             } catch (e: NotFoundException) {
-                listener.qrCodeNotFound()
+                listener.onQRCodeDecodeFailed()
             }
         }
 
