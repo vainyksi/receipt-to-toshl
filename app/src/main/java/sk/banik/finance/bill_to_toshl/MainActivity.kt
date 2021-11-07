@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_CAMERA) {
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
@@ -99,9 +100,9 @@ class MainActivity : AppCompatActivity() {
         imageAnalysis.setAnalyzer(
             ContextCompat.getMainExecutor(this),
             QRCodeImageDecoder(object : QRCodeDecodingListener {
-                override fun onQRCodeDecodedSuccessfully(_qrCode: String?) {
-                    qrCode = _qrCode
-                    qrCodeFoundButton!!.text = getString(R.string.qr_code_found, qrCode)
+                override fun onQRCodeDecodedSuccessfully(qrCode: String?) {
+                    this@MainActivity.qrCode = qrCode
+                    qrCodeFoundButton!!.text = getString(R.string.qr_code_found, this@MainActivity.qrCode)
                     qrCodeFoundButton!!.visibility = View.VISIBLE
                 }
 
