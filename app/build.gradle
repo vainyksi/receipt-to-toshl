@@ -49,4 +49,8 @@ dependencies {
 
     // qrcode reader
     implementation 'com.google.zxing:core:3.4.1'
+
+    // REST client
+//    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation("com.squareup.okhttp3:okhttp:4.9.2")
 }

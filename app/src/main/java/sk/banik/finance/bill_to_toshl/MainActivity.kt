@@ -2,12 +2,12 @@ package sk.banik.finance.bill_to_toshl
 
 import android.Manifest
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Size
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -99,17 +99,7 @@ class MainActivity : AppCompatActivity() {
             .build()
         imageAnalysis.setAnalyzer(
             ContextCompat.getMainExecutor(this),
-            QRCodeImageDecoder(object : QRCodeDecodingListener {
-                override fun onQRCodeDecodedSuccessfully(qrCode: String?) {
-                    this@MainActivity.qrCode = qrCode
-                    qrCodeFoundButton!!.text = getString(R.string.qr_code_found, this@MainActivity.qrCode)
-                    qrCodeFoundButton!!.visibility = View.VISIBLE
-                }
-
-                override fun onQRCodeDecodeFailed() {
-                    qrCodeFoundButton!!.visibility = View.INVISIBLE
-                }
-            })
+            QRCodeImageDecoder(QRCodeListenerImpl(qrCodeFoundButton, this))
         )
 
         val camera = cameraProvider.bindToLifecycle((this as LifecycleOwner), cameraSelector, imageAnalysis, preview)
